@@ -1,7 +1,7 @@
 {
   "name": "voxel-fly",
   "version": "0.0.1",
-  "description": "lets you fly around voxel.js games",
+  "description": "fly around in voxel.js games",
   "repository": {
     "type": "git",
     "url": "git://github.com/maxogden/voxel-fly.git"
