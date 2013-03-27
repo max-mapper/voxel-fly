@@ -1,3 +1,7 @@
+var ever = require('ever')
+var vkey = require('vkey')
+var events = require('events')
+
 var game
 
 module.exports = function(gameInstance) {
@@ -13,12 +17,17 @@ function Fly(physical, noKeyEvents) {
   if (!noKeyEvents) this.bindKeyEvents()
 }
 
-Fly.prototype.bindKeyEvents = function() {
+Fly.prototype.bindKeyEvents = function(el) {
+  if (!el) el = document.body
   var self = this
   var counter = 0
   var first = Date.now()
-  game.buttons.events.on('change', function(binding, on) {
-    if (binding !== "jump" || !on) return
+  ever(el).on('keydown', onKeyDown)
+  
+  function onKeyDown(ev) {
+    var key = vkey[ev.keyCode] || ev.char
+    var binding = game.keybindings[key]
+    if (binding !== "jump") return
     if (counter === 1) {
       if (Date.now() - first > 500) {
         return first = Date.now()
@@ -29,9 +38,9 @@ Fly.prototype.bindKeyEvents = function() {
     }
     if (counter === 0) {
       first = Date.now()
-      counter += on
+      counter += 1
     }
-  })
+  }
 }
 
 Fly.prototype.startFlying = function() {
