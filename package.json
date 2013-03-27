@@ -13,7 +13,8 @@
   },
   "devDependencies": {
     "beefy": "0.0.11",
-    "browserify": "~2.8.1"
+    "browserify": "~2.8.1",
+    "voxel-hello-world": "0.2.0"
   },
   "scripts": {
     "start": "beefy test.js"
