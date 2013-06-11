@@ -13,6 +13,7 @@ module.exports = function(gameInstance) {
 }
 
 function Fly(physical, noKeyEvents) {
+  this.flySpeed = 0.8
   this.physical = physical
   if (!noKeyEvents) this.bindKeyEvents()
 }
@@ -50,8 +51,8 @@ Fly.prototype.startFlying = function() {
   physical.removeForce(game.gravity)
   physical.onGameTick = function(dt) {
     if (physical.atRestY() === -1) return self.stopFlying()
-    physical.friction.x = game.friction
-    physical.friction.z = game.friction
+    physical.friction.x = self.flySpeed
+    physical.friction.z = self.flySpeed
     var press = game.controls.state
     if (press['crouch']) return physical.velocity.y = -0.01
     if (press['jump']) return physical.velocity.y = 0.01
