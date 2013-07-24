@@ -22,24 +22,38 @@ Fly.prototype.bindKeyEvents = function(el) {
   if (!el) el = document.body
   var self = this
   var counter = 0
+  var spaceUpAfterFirstDown = false
   var first = Date.now()
-  ever(el).on('keydown', onKeyDown)
+  ever(el)
+    .on('keydown', onKeyDown)
+    .on('keyup', onKeyUp)
   
   function onKeyDown(ev) {
     var key = vkey[ev.keyCode] || ev.char
     var binding = game.keybindings[key]
     if (binding !== "jump") return
     if (counter === 1) {
-      if (Date.now() - first > 500) {
+      if (Date.now() - first > 300) {
+        spaceUpAfterFirstDown = false
         return first = Date.now()
       } else {
-        if (!self.flying) self.startFlying()
+        if (!self.flying && spaceUpAfterFirstDown) {
+          self.startFlying()
+        }
       }
+      spaceUpAfterFirstDown = false
       return counter = 0
     }
     if (counter === 0) {
       first = Date.now()
       counter += 1
+    }
+  }
+  
+  function onKeyUp(ev) {
+    var key = vkey[ev.keyCode] || ev.char
+    if (key === '<space>' && counter === 1) {
+      spaceUpAfterFirstDown = true
     }
   }
 }
